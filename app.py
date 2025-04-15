@@ -32,6 +32,7 @@ def convert_units(category, from_unit, to_unit, value):
 def convert_temperature(from_unit, to_unit, value):
     if from_unit == to_unit:
         return value
+
     # Convert to Celsius first
     if from_unit == "Fahrenheit":
         value = (value - 32) * 5/9
@@ -47,13 +48,28 @@ def convert_temperature(from_unit, to_unit, value):
         return value
 
 # Streamlit UI
+def render_converter():
+    st.title("🔄 Google-style Unit Converter")
 
-st.title("🔄 Unit Converter")
-category = st.selectbox("Choose Category", list(conversion_factors.keys()))
-from_unit = st.selectbox("From", list(conversion_factors[category].keys()))
-to_unit = st.selectbox("To", list(conversion_factors[category].keys()))
-value = st.number_input("Enter value", min_value=0.0, format="%.4f")
+    with st.form("converter_form"):
+        col1, col2, col3 = st.columns([1, 1, 1])
 
-if st.button("Convert"):
-    result = convert_units(category, from_unit, to_unit, value)
-    st.success(f"{value} {from_unit} = {result:.4f} {to_unit}")
+        with col1:
+            category = st.selectbox("Category", list(conversion_factors.keys()))
+
+        with col2:
+            from_unit = st.selectbox("From", list(conversion_factors[category].keys()))
+
+        with col3:
+            to_unit = st.selectbox("To", list(conversion_factors[category].keys()))
+
+        value = st.number_input("Value", min_value=0.0, format="%.4f")
+
+        submitted = st.form_submit_button("Convert")
+
+        if submitted:
+            result = convert_units(category, from_unit, to_unit, value)
+            st.success(f"{value} {from_unit} = {result:.4f} {to_unit}")
+
+if __name__ == "__main__":
+    render_converter()
