@@ -49,7 +49,7 @@ def convert_temperature(from_unit, to_unit, value):
 
 # Streamlit UI
 def render_converter():
-    st.title("🔄 Google-style Unit Converter")
+    st.title("🔄 Streamlit Unit Converter")
 
     with st.form("converter_form"):
         col1, col2, col3 = st.columns([1, 1, 1])
