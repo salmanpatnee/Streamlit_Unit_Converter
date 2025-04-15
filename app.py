@@ -22,6 +22,31 @@ conversion_factors = {
     }
 }
 
+def convert_units(category, from_unit, to_unit, value):
+    if category == "Temperature":
+        return convert_temperature(from_unit, to_unit, value)
+    else:
+        base_value = value * conversion_factors[category][from_unit]
+        return base_value / conversion_factors[category][to_unit]
+
+def convert_temperature(from_unit, to_unit, value):
+    if from_unit == to_unit:
+        return value
+    # Convert to Celsius first
+    if from_unit == "Fahrenheit":
+        value = (value - 32) * 5/9
+    elif from_unit == "Kelvin":
+        value = value - 273.15
+
+    # Convert from Celsius to target
+    if to_unit == "Fahrenheit":
+        return (value * 9/5) + 32
+    elif to_unit == "Kelvin":
+        return value + 273.15
+    else:
+        return value
+
+# Streamlit UI
 
 st.title("🔄 Unit Converter")
 category = st.selectbox("Choose Category", list(conversion_factors.keys()))
